@@ -1,3 +1,12 @@
+import axios from 'axios';
+
+axios({
+    method: 'GET',
+    url: 'https://the-trivia-api.com/api/questions?limit=20&region=FR'
+}).then((response) => {
+    console.log(response.data);
+});
+
 let data = [
     {
         question: "What's the biggest planet in our solar system ?",
