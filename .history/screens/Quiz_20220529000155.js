@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View, Animated, Modal } from 'react-native';
-import { COLORS } from '../constants';
+import React, { useState } from 'react'
+import { SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View, Animated, Modal } from 'react-native'
+import { COLORS, SIZES } from '../constants';
 import data from '../data/QuizData';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -75,14 +75,10 @@ const Quiz = () => {
           <Text style={{color: COLORS.white, fontSize: 20, opacity: 0.6}}>/{allQuestions.length}</Text>
         </View>
 
-        <View style={{height: 25}}>
-        </View>
+
 
         {/* Question */}
-        <Text style={{ color: COLORS.white, fontSize: 30 }}>{allQuestions[currentQuestionIndex]?.question}</Text>
-        
-        <View style={{height: 10}}>
-        </View>
+        <Text style={{color: COLORS.white, fontSize: 30}}>{allQuestions[currentQuestionIndex]?.question}</Text>
       </View> 
     )
   }
