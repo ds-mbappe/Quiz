@@ -68,7 +68,7 @@ const Quiz = () => {
 
   const renderQuestion = () => {
     return (
-      <View>
+      <View style={{marginVertical: 40}}>
         {/* Question Counter */}
         <View style={styles.questions}>
           <Text style={{color: COLORS.white, fontSize: 20, opacity: 0.6, marginRight: 2}}>{"Question " + currentQuestionIndex}</Text>

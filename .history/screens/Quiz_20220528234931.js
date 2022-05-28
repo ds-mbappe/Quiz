@@ -60,7 +60,7 @@ const Quiz = () => {
     setIsOptionDisabled(false);
     setShowNextButton(false);
     Animated.timing(progress, {
-      toValue: 0,
+      toValue: currentQuestionIndex + 1,
       duration: 1000,
       useNativeDriver: false
     }).start();
@@ -212,9 +212,8 @@ const Quiz = () => {
               <Text style={{ fontSize: 30, fontWeight: 'bold' }}>{score > (allQuestions.length / 2) ? 'Congratulations!' : 'Oops!'}</Text>
               
               <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', marginVertical: 20 }}>
-                <Text style={{fontSize: 20, color: COLORS.black, fontWeight: 'bold'}}>Final Score   </Text>
-                <Text style={{fontSize: 30, color: score > (allQuestions.length / 2) ? COLORS.success : COLORS.error}}>{score}</Text>
-                <Text style={{fontSize: 20, color: COLORS.black}}>/{allQuestions.length}</Text>
+                <Text style={{fontSize: 20, color: score > (allQuestions.length / 2) ? COLORS.success : COLORS.error}}>{score}</Text>
+                <Text style={{fontSize: 20, color: COLORS.black}}>/ {allQuestions.length}</Text>
               </View>
               {/* Restart Quiz */}
               <TouchableOpacity

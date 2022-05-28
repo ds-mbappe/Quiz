@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View, Animated, Modal } from 'react-native'
+import { SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { COLORS, SIZES } from '../constants';
 import data from '../data/QuizData';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -13,12 +13,6 @@ const Quiz = () => {
   const [isOptionDisabled, setIsOptionDisabled] = useState(false);
   const [score, setScore] = useState(0);
   const [showNextbutton, setShowNextButton] = useState(false);
-  const [showScoreModal, setShowScoreModal] = useState(false);
-  const [progress, setProgress] = useState(new Animated.Value(0));
-  const progressAnim = progress.interpolate({
-    inputRange: [0, allQuestions.length],
-    outputRange: ['0%', '100%']
-  });
 
   const validateAnswer = (selectedOption) => {
     let correct_option = allQuestions[currentQuestionIndex]['correct_option'];
@@ -33,46 +27,13 @@ const Quiz = () => {
     setShowNextButton(true);
   }
 
-  const handleNext = () => {
-    if (currentQuestionIndex == allQuestions.length - 1) {
-      setShowScoreModal(true);
-    }
-    else {
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
-      setCurrentOptionSelected(null);
-      setCorrectOption(null);
-      setIsOptionDisabled(false);
-      setShowNextButton(false);
-    }
-    Animated.timing(progress, {
-      toValue: currentQuestionIndex + 1,
-      duration: 1000,
-      useNativeDriver: false
-    }).start();
-  }
-
-  const restartQuiz = () => {
-    setShowScoreModal(false);
-    setCurrentQuestionIndex(0);
-    setScore(0);
-    setCurrentOptionSelected(null);
-    setCorrectOption(null);
-    setIsOptionDisabled(false);
-    setShowNextButton(false);
-    Animated.timing(progress, {
-      toValue: 0,
-      duration: 1000,
-      useNativeDriver: false
-    }).start();
-  }
-
   const renderQuestion = () => {
     return (
       <View>
         {/* Question Counter */}
         <View style={styles.questions}>
-          <Text style={{color: COLORS.white, fontSize: 20, opacity: 0.6, marginRight: 2}}>{"Question " + currentQuestionIndex}</Text>
-          <Text style={{color: COLORS.white, fontSize: 20, opacity: 0.6}}>/{allQuestions.length}</Text>
+          <Text style={{color: COLORS.white, fontSize: 20, opacity: 0.6, marginRight: 2}}>{"Question " + currentQuestionIndex + 1}</Text>
+          <Text style={{color: COLORS.white, fontSize: 18, opacity: 0.6}}>/{allQuestions.length}</Text>
         </View>
 
         <View style={{height: 25}}>
@@ -157,15 +118,9 @@ const Quiz = () => {
   const renderNextButton = () => {
     if (showNextbutton) {
       return (
-        <TouchableOpacity
-          onPress={handleNext}
-          style={{ display: 'flex', justifyContent: 'center', flexDirection: 'row', marginTop: 20, width: '100%', backgroundColor: COLORS.accent, padding: 20, borderRadius: 20 }}
-        >
+        <TouchableOpacity style={{flex: 1, flexDirection: 'row', marginTop: 20, width: '30%', backgroundColor: COLORS.accent, padding: 20, borderRadius: 5}}>
           <Text style={{fontSize: 20, fontWeight: 'bold', color: COLORS.white, textAlign: 'center'}}>Next</Text>
-          <MaterialCommunityIcons
-            style={{ fontSize: 20, fontWeight: 'bold', color: COLORS.white, textAlign: 'center' }}
-            name='chevron-right'
-          />
+          <MaterialCommunityIcons style={{fontSize: 20, fontWeight: 'bold', color: COLORS.white, textAlign: 'center'}} name='chevron-right'/>
         </TouchableOpacity>
       )
     }
@@ -174,24 +129,13 @@ const Quiz = () => {
     }
   }
 
-  const renderProgressBar = () => {
-    return (
-      <View style={{ width: '100%', height: 10, borderRadius: 20, backgroundColor: '#00000020' }}>
-        <Animated.View style={[{height: 10, borderRadius: 20, backgroundColor: COLORS.accent}, {width: progressAnim}]}>
-
-        </Animated.View>
-      </View>
-    )
-  }
-
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle='light-content' backgroundColor={COLORS.primary} />
       <View style={styles.mainView}>
 
         {/* ProgressBar */}
-        {renderProgressBar()}
-        
+
         {/* Question */}
         {renderQuestion()}
 
@@ -200,31 +144,6 @@ const Quiz = () => {
 
         {/* Next Button */}
         {renderNextButton()}
-        
-        {/* Score Modal */}
-        <Modal
-          animationType='slide'
-          transparent={true}
-          visible={showScoreModal}
-        >
-          <View style={{ flex: 1, backgroundColor: COLORS.primary, alignItems: 'center', justifyContent: 'center' }}>
-            <View style={{ backgroundColor: COLORS.white, width: '70%', borderRadius: 20, padding: 20, alignItems: 'center' }}>
-              <Text style={{ fontSize: 30, fontWeight: 'bold' }}>{score > (allQuestions.length / 2) ? 'Congratulations!' : 'Oops!'}</Text>
-              
-              <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', marginVertical: 20 }}>
-                <Text style={{fontSize: 20, color: COLORS.black, fontWeight: 'bold'}}>Final Score   </Text>
-                <Text style={{fontSize: 30, color: score > (allQuestions.length / 2) ? COLORS.success : COLORS.error}}>{score}</Text>
-                <Text style={{fontSize: 20, color: COLORS.black}}>/{allQuestions.length}</Text>
-              </View>
-              {/* Restart Quiz */}
-              <TouchableOpacity
-                onPress={restartQuiz}
-                style={{ backgroundColor: COLORS.accent, padding: 20, width: '100%', borderRadius: 20 }}>
-                <Text style={{textAlign: 'center', fontWeight: 'bold', color: COLORS.white, fontSize: 20}}>Retry Quiz</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </Modal>
 
       </View>
     </SafeAreaView>
@@ -248,6 +167,5 @@ const styles = StyleSheet.create({
   questions: {
     flexDirection: 'row',
     alignItems: 'flex-end',
-    marginTop: 50
   }
 })

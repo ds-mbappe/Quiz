@@ -1,10 +1,13 @@
+
 import React from 'react'
 import { SafeAreaView, StyleSheet, Text } from 'react-native';
 import { Quiz } from './screens';
 
 const App = () => {
   return (
-    <Quiz />
+    <SafeAreaView>
+          <Quiz />
+    </SafeAreaView>
   )
 }
 

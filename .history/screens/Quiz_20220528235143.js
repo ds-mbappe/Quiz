@@ -60,7 +60,7 @@ const Quiz = () => {
     setIsOptionDisabled(false);
     setShowNextButton(false);
     Animated.timing(progress, {
-      toValue: 0,
+      toValue: currentQuestionIndex + 1,
       duration: 1000,
       useNativeDriver: false
     }).start();

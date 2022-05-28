@@ -60,7 +60,7 @@ const Quiz = () => {
     setIsOptionDisabled(false);
     setShowNextButton(false);
     Animated.timing(progress, {
-      toValue: 0,
+      toValue: currentQuestionIndex + 1,
       duration: 1000,
       useNativeDriver: false
     }).start();
@@ -71,7 +71,7 @@ const Quiz = () => {
       <View>
         {/* Question Counter */}
         <View style={styles.questions}>
-          <Text style={{color: COLORS.white, fontSize: 20, opacity: 0.6, marginRight: 2}}>{"Question " + currentQuestionIndex}</Text>
+          <Text style={{color: COLORS.white, fontSize: 20, opacity: 0.6, marginRight: 2}}>{"Question " + currentQuestionIndex + 1}</Text>
           <Text style={{color: COLORS.white, fontSize: 20, opacity: 0.6}}>/{allQuestions.length}</Text>
         </View>
 
@@ -212,9 +212,8 @@ const Quiz = () => {
               <Text style={{ fontSize: 30, fontWeight: 'bold' }}>{score > (allQuestions.length / 2) ? 'Congratulations!' : 'Oops!'}</Text>
               
               <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', marginVertical: 20 }}>
-                <Text style={{fontSize: 20, color: COLORS.black, fontWeight: 'bold'}}>Final Score   </Text>
                 <Text style={{fontSize: 30, color: score > (allQuestions.length / 2) ? COLORS.success : COLORS.error}}>{score}</Text>
-                <Text style={{fontSize: 20, color: COLORS.black}}>/{allQuestions.length}</Text>
+                <Text style={{fontSize: 20, color: COLORS.black}}>/ {allQuestions.length}</Text>
               </View>
               {/* Restart Quiz */}
               <TouchableOpacity
@@ -248,6 +247,5 @@ const styles = StyleSheet.create({
   questions: {
     flexDirection: 'row',
     alignItems: 'flex-end',
-    marginTop: 50
   }
 })

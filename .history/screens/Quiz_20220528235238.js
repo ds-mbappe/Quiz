@@ -54,13 +54,14 @@ const Quiz = () => {
   const restartQuiz = () => {
     setShowScoreModal(false);
     setCurrentQuestionIndex(0);
+    setProgress(0);
     setScore(0);
     setCurrentOptionSelected(null);
     setCorrectOption(null);
     setIsOptionDisabled(false);
     setShowNextButton(false);
     Animated.timing(progress, {
-      toValue: 0,
+      toValue: currentQuestionIndex + 1,
       duration: 1000,
       useNativeDriver: false
     }).start();
