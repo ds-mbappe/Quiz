@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View, Animated, Modal } from 'react-native';
 import { COLORS } from '../constants';
+import data from '../data/QuizData';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const Quiz = () => {

@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View, Animated, Modal } from 'react-native';
 import { COLORS } from '../constants';
+import data from '../data/QuizData';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const Quiz = () => {
@@ -188,39 +189,6 @@ const Quiz = () => {
               marginVertical: 10,
             }}>
             <Text style={{ fontSize: 20, color: COLORS.white }}>{allQuestions[currentQuestionIndex]?.['correctAnswer']}</Text>
-
-            {/* Show Check or Cross based on answer */}
-            {
-              allQuestions[currentQuestionIndex]?.['correctAnswer'] == correctOption ? (
-                <View style={{
-                  width: 30,
-                  height: 30,
-                  borderRadius: 30 / 2,
-                  backgroundColor: COLORS.success,
-                  justifyContent: 'center',
-                  alignItems: 'center'
-                }}>
-                  <MaterialCommunityIcons name="check" style={{
-                    color: COLORS.white,
-                    fontSize: 20
-                  }} />
-                </View>
-              ) : allQuestions[currentQuestionIndex]?.['correctAnswer'] == currentOptionSelected ?(
-                <View style={{
-                  width: 30,
-                  height: 30,
-                  borderRadius: 30 / 2,
-                  backgroundColor: COLORS.error,
-                  justifyContent: 'center',
-                  alignItems: 'center'
-                }}>
-                  <MaterialCommunityIcons name="close" style={{
-                    color: COLORS.white,
-                    fontSize: 20
-                  }} />
-                </View>
-              ) : null
-            }
           </TouchableOpacity>
         }
       </View>

@@ -1,14 +1,13 @@
-import axios from 'axios';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View, Animated, Modal } from 'react-native';
 import { COLORS } from '../constants';
+import data from '../data/QuizData';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const Quiz = () => {
 
-  const [optionsArray, setoptionsArray] = useState([]);
-  const allQuestions = optionsArray;
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(1)
+  const allQuestions = data;
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
   const [currentOptionSelected, setCurrentOptionSelected] = useState(null);
   const [correctOption, setCorrectOption] = useState(null);
   const [isOptionDisabled, setIsOptionDisabled] = useState(false);
@@ -17,21 +16,21 @@ const Quiz = () => {
   const [showScoreModal, setShowScoreModal] = useState(false);
   const [progress, setProgress] = useState(new Animated.Value(0));
   const progressAnim = progress.interpolate({
-    inputRange: [0, 20],
+    inputRange: [0, allQuestions.length],
     outputRange: ['0%', '100%']
   });
 
   useEffect(() => {
-      const optionsListResp = async () => {
-        await axios.get('https://the-trivia-api.com/api/questions?limit=20&region=FR')
-        .then(
-          response => setoptionsArray(response.data))
-      }
-      optionsListResp();
-    }, []);
+    const expensesListResp = async () => {
+      await axios.get('https://the-trivia-api.com/api/questions?limit=20&region=FR')
+      .then(
+        response => console.log(response.data))
+    }
+    expensesListResp();
+  }, []);
 
   const validateAnswer = (selectedOption) => {
-    let correct_option = allQuestions[currentQuestionIndex]['correctAnswer'];
+    let correct_option = allQuestions[currentQuestionIndex]['correct_option'];
     setCurrentOptionSelected(selectedOption);
     setCorrectOption(correct_option);
     setIsOptionDisabled(true);
@@ -81,17 +80,17 @@ const Quiz = () => {
       <View>
         {/* Question Counter */}
         <View style={styles.questions}>
-          <Text style={{color: COLORS.white, fontSize: 20, opacity: 0.6, marginRight: 2}}>{"Question " + (currentQuestionIndex)}</Text>
-          <Text style={{color: COLORS.white, fontSize: 20, opacity: 0.6}}>/20</Text>
+          <Text style={{color: COLORS.white, fontSize: 20, opacity: 0.6, marginRight: 2}}>{"Question " + currentQuestionIndex}</Text>
+          <Text style={{color: COLORS.white, fontSize: 20, opacity: 0.6}}>/{allQuestions.length}</Text>
         </View>
 
         <View style={{height: 25}}>
         </View>
 
         {/* Question */}
-        <Text style={{ color: COLORS.white, fontSize: 30 }}>{allQuestions[currentQuestionIndex]?.['question']}</Text>
+        <Text style={{ color: COLORS.white, fontSize: 30 }}>{allQuestions[currentQuestionIndex]?.question}</Text>
         
-        <View style={{ height: 10 }}>
+        <View style={{height: 10}}>
         </View>
       </View> 
     )
@@ -101,7 +100,7 @@ const Quiz = () => {
     return (
       <View>
         {
-          allQuestions[currentQuestionIndex]?.incorrectAnswers.map(option => (
+          allQuestions[currentQuestionIndex]?.options.map(option => (
             <TouchableOpacity
               onPress={() => validateAnswer(option)}
               disabled={isOptionDisabled}
@@ -162,66 +161,6 @@ const Quiz = () => {
               }
             </TouchableOpacity>
           ))
-        }
-        {
-          <TouchableOpacity
-            onPress={() => validateAnswer(allQuestions[currentQuestionIndex]?.['correctAnswer'])}
-            disabled={isOptionDisabled}
-            style={{
-              borderWidth: 1,
-              borderColor: allQuestions[currentQuestionIndex]?.['correctAnswer'] == correctOption
-                ? COLORS.success
-                : allQuestions[currentQuestionIndex]?.['correctAnswer'] == currentOptionSelected
-                  ? COLORS.error
-                  : COLORS.secondary + '40',
-              backgroundColor: allQuestions[currentQuestionIndex]?.['correctAnswer'] == correctOption
-              ? COLORS.success + '20'
-              : allQuestions[currentQuestionIndex]?.['correctAnswer'] == currentOptionSelected
-                ? COLORS.error + '20'
-                : COLORS.secondary + '20',
-              height: 60,
-              borderRadius: 20,
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              paddingHorizontal: 20,
-              marginVertical: 10,
-            }}>
-            <Text style={{ fontSize: 20, color: COLORS.white }}>{allQuestions[currentQuestionIndex]?.['correctAnswer']}</Text>
-
-            {/* Show Check or Cross based on answer */}
-            {
-              allQuestions[currentQuestionIndex]?.['correctAnswer'] == correctOption ? (
-                <View style={{
-                  width: 30,
-                  height: 30,
-                  borderRadius: 30 / 2,
-                  backgroundColor: COLORS.success,
-                  justifyContent: 'center',
-                  alignItems: 'center'
-                }}>
-                  <MaterialCommunityIcons name="check" style={{
-                    color: COLORS.white,
-                    fontSize: 20
-                  }} />
-                </View>
-              ) : allQuestions[currentQuestionIndex]?.['correctAnswer'] == currentOptionSelected ?(
-                <View style={{
-                  width: 30,
-                  height: 30,
-                  borderRadius: 30 / 2,
-                  backgroundColor: COLORS.error,
-                  justifyContent: 'center',
-                  alignItems: 'center'
-                }}>
-                  <MaterialCommunityIcons name="close" style={{
-                    color: COLORS.white,
-                    fontSize: 20
-                  }} />
-                </View>
-              ) : null
-            }
-          </TouchableOpacity>
         }
       </View>
     )
